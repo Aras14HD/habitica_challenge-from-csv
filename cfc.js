@@ -18,6 +18,8 @@ tasks of the type Daily can be daily, weekly, monthly, or yearly. They have spec
 daily:   Repeat Every:
 weekly:  Repeat On:    list of days not repeated seperated with commas
 monthly: Repeat On:    list of days not repeated seperated with commas; Select DOM(0) or DOW(1); Days Of Month: list of days of the month seperated with commas; Weeks Of Month: list of weeks of the month seperated with commas
+
+Date format: YYYY-MM-DDTHH:mm:ss.sssZ
 */
 const ChallengeFromCSV = {
   start: (e, userID, APIToken) => {
@@ -32,12 +34,13 @@ const ChallengeFromCSV = {
     tArray = data.tArray;
     console.log(Cdata);
     console.log(tArray);
-    ChallengeFromCSV.postRequest("https://habitica.com/api/v3/challenges", userID, APIToken, Cdata).then(response => function(response) {
+    ChallengeFromCSV.postRequest("https://habitica.com/api/v3/challenges", userID, APIToken, Cdata).then(function(response) {
+      console.log(response);
       id = JSON.parse(response).data.id;
       for(const task of tArray) {
-        ChallengeFromCSV.postRequest("https://habitica.com/api/v3/tasks/callenge/" + id, userID, APIToken, task)
+        ChallengeFromCSV.postRequest("https://habitica.com/api/v3/tasks/challenge/" + id, userID, APIToken, task)
       }
-    }, error => console.error(error))
+    })
   },
   postRequest: (url, userID, APIToken, queryParams={}) => {
 		let promise = new Promise((resolve, reject) => {
@@ -49,12 +52,13 @@ const ChallengeFromCSV = {
 			};
 
 			req.onload = function() {
-				if (req.status === 200) {
+				if (req.status === 200 || 201) {
 					resolve(this.responseText);
 				} else {
 					reject(this.responseText);
 				}
 			}
+      req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 			req.setRequestHeader("x-client", "456b5feb-bd5c-4046-b5b3-83606a1f6a76-cfc");
 			req.setRequestHeader("x-api-user", userID);
 			req.setRequestHeader("x-api-key", APIToken);
@@ -76,19 +80,19 @@ const ChallengeFromCSV = {
       reader.readAsText(File);
       reader.onload = function(e) {
         Text = e.target.result;
-        tempArray = Text.split("\n");
+        tempArray = Text.split("\r\n");
         Cdata = {
+          group: tempArray[4],
           name: tempArray[0],
           shortName: tempArray[1],
           summary: tempArray[2],
           description: tempArray[3],
-          group: tempArray[4],
-          prize: tempArray[6]
+          prize: tempArray[5]
         };
         //tasks
         tArray = [];
         task = false;
-        for(i = 7; i < tempArray.length - 2; i++) {
+        for(i = 7; i < tempArray.length - 1; i++) {
           taskArray = tempArray[i].split(";");
           tObject = {
             type: taskArray[0],

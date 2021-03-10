@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
+
+  if (localStorage.getItem('userID') != null) {
+    document.getElementById("UserID").value = localStorage.getItem('userID');
+    document.getElementById("APItoken").value = localStorage.getItem('APIToken');
+  }
   document.getElementById("challengeFile").addEventListener('change', function() {
     ChallengeFromCSV.fileParse(this).then(function(response) {
       sessionStorage.setItem('data', JSON.stringify(response));
@@ -21,6 +26,8 @@ document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("Submit").addEventListener("click", function() {
     userID = document.getElementById("UserID").value;
     APIToken = document.getElementById("APItoken").value;
+    localStorage.setItem('userID', userID);
+    localStorage.setItem('APIToken', APIToken);
     ChallengeFromCSV.sendData(JSON.parse(sessionStorage.getItem('data')), userID, APIToken)
   })
 })

@@ -21,3 +21,5 @@ tasks of the type Daily can be daily, weekly, monthly, or yearly. They have spec
 daily:   Repeat Every:
 weekly:  Repeat On:    list of days not repeated seperated with commas
 monthly: Repeat On:    list of days not repeated seperated with commas; Select DOM(0) or DOW(1); Days Of Month: list of days of the month seperated with commas; Weeks Of Month: list of weeks of the month seperated with commas
+
+Date format: YYYY-MM-DDTHH:mm:ss.sssZ
