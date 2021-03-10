@@ -6,7 +6,6 @@ Short Name
 Summary
 Challenge Description
 Guild ID
-Categories
 Gem Prize
 Indicator for beginning of tasks
 //Tasks are listed in this way:
@@ -89,7 +88,7 @@ const ChallengeFromCSV = {
         //tasks
         tArray = [];
         task = false;
-        for(i = 8; i < tempArray.length - 2; i++) {
+        for(i = 7; i < tempArray.length - 2; i++) {
           taskArray = tempArray[i].split(";");
           tObject = {
             type: taskArray[0],

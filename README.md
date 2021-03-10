@@ -9,7 +9,6 @@ Short Name
 Summary
 Challenge Description
 Guild ID
-Categories
 Gem Prize
 Indicator for beginning of tasks
 //Tasks are listed in this way:
