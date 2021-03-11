@@ -92,7 +92,7 @@ const ChallengeFromCSV = {
         //tasks
         tArray = [];
         task = false;
-        for(i = 7; i < tempArray.length - 1; i++) {
+        for(i = 6; i < tempArray.length; i++) {
           taskArray = tempArray[i].split(";");
           tObject = {
             type: taskArray[0],
@@ -114,13 +114,13 @@ const ChallengeFromCSV = {
               priority = 2;
           }
           switch(taskArray[0]) {
-            case "Habit":
+            case "habit":
               tObject = Object.assign({
                 priority: priority,
                 startDate: taskArray[4]
               }, tObject);
               break
-            case "Daily":
+            case "daily":
             tObject = Object.assign({
               priority: priority,
               frequency: taskArray[5],
@@ -173,13 +173,13 @@ const ChallengeFromCSV = {
                 }
             }
             break
-            case "To Do":
+            case "todo":
             tObject = Object.assign({
               priority: priority,
               date: taskArray[4]
             }, tObject);
             break
-            case "Reward":
+            case "reward":
             tObject = Object.assign({
               value: taskArray[3]
             }, tObject);
