@@ -74,8 +74,8 @@ const ChallengeFromCSV = {
       var reader = new FileReader();
       reader.readAsText(File);
       reader.onload = function (e) {
-        Text = e.target.result;
-        var tempArray = Text.split("\r\n");
+        var text = e.target.result;
+        var tempArray = text.split("\r\n");
         //Data for the challenge
         var Cdata = {
           group: tempArray[4],
@@ -108,7 +108,7 @@ const ChallengeFromCSV = {
               priority = 1.5;
               break;
             case "Hard":
-              var priority = 2;
+              priority = 2;
           }
           //task type
           switch (taskArray[0]) {
