@@ -10,10 +10,9 @@ const ChallengeFromCSV = {
    */
   sendData: (data, userID, APIToken) => {
     ChallengeFromCSV.postRequest("https://habitica.com/api/v3/challenges", userID, APIToken, data.Cdata).then(function(response) {
-      console.log(response);
       id = JSON.parse(response).data.id;
       for(const task of data.tArray) {
-        ChallengeFromCSV.postRequest("https://habitica.com/api/v3/tasks/challenge/" + id, userID, APIToken, task)
+        ChallengeFromCSV.postRequest("https://habitica.com/api/v3/tasks/challenge/" + id, userID, APIToken, task);
       }
     })
   },
@@ -47,7 +46,7 @@ const ChallengeFromCSV = {
 			req.setRequestHeader("x-api-key", APIToken);
 			req.send(JSON.stringify(queryParams));
 		});
-		return promise
+		return promise;
 	},
   /**
    *Converts CSV/TXT File to usable data.
@@ -56,7 +55,7 @@ const ChallengeFromCSV = {
    */
   fileParse: (e) => {
     return new Promise(function(resolve, reject) {
-      FileList = e.files
+      FileList = e.files;
       if (FileList.length > 1) console.error("multiple files selected");
       File = FileList[0];
       var reader = new FileReader();
@@ -104,7 +103,7 @@ const ChallengeFromCSV = {
                 priority: priority,
                 startDate: taskArray[4]
               }, tObject);
-              break
+              break;
             case "daily":
             tObject = Object.assign({
               priority: priority,
@@ -158,13 +157,13 @@ const ChallengeFromCSV = {
                   }, tObject);
                 }
             }
-            break
+            break;
             case "todo":
             tObject = Object.assign({
               priority: priority,
               date: taskArray[4]
             }, tObject);
-            break
+            break;
             case "reward":
             tObject = Object.assign({
               value: taskArray[3]
