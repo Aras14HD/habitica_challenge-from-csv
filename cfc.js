@@ -1,26 +1,3 @@
-/*
-CSV/TXT format:
-
-Challenge Name
-Short Name
-Summary
-Challenge Description
-Guild ID
-Gem Prize
-Indicator for beginning of tasks
-//Tasks are listed in this way:
-Task Type: Habit; Title; Notes; Difficulty; Start Date;
-Task Type: Daily; Title; Notes; Difficulty; Start Date; Repeats;
-Task Type: To Do; Title; Notes; Difficulty; Due Date;
-Task Type: Reward; Title; Notes; Cost;
-
-tasks of the type Daily can be daily, weekly, monthly, or yearly. They have special requirements:
-daily:   Repeat Every:
-weekly:  Repeat On:    list of days not repeated seperated with commas
-monthly: Repeat On:    list of days not repeated seperated with commas; Select DOM(0) or DOW(1); Days Of Month: list of days of the month seperated with commas; Weeks Of Month: list of weeks of the month seperated with commas
-
-Date format: YYYY-MM-DDTHH:mm:ss.sssZ
-*/
 const ChallengeFromCSV = {
   start: (e, userID, APIToken) => {
     ChallengeFromCSV.fileParse(e).then(result => ChallengeFromCSV.sendData(result, userID, APIToken));
@@ -28,20 +5,26 @@ const ChallengeFromCSV = {
   /**
    *Sends the data via AJAX to habitica
    * @param {Object} data - An object containing a challenge and an array containig the tasks.
+   * @param {string} userID - userID
+   * @param {string} APIToken - APIToken
    */
   sendData: (data, userID, APIToken) => {
-    Cdata = data.Cdata;
-    tArray = data.tArray;
-    console.log(Cdata);
-    console.log(tArray);
-    ChallengeFromCSV.postRequest("https://habitica.com/api/v3/challenges", userID, APIToken, Cdata).then(function(response) {
+    ChallengeFromCSV.postRequest("https://habitica.com/api/v3/challenges", userID, APIToken, data.Cdata).then(function(response) {
       console.log(response);
       id = JSON.parse(response).data.id;
-      for(const task of tArray) {
+      for(const task of data.tArray) {
         ChallengeFromCSV.postRequest("https://habitica.com/api/v3/tasks/challenge/" + id, userID, APIToken, task)
       }
     })
   },
+  /**
+  *Sends POST request to specified url with authentication and parameters
+   * @param {string} url - url to send POST request to
+   * @param {string} userID - userID
+   * @param {string} APIToken - APIToken
+   * @param {Object} queryParams - Request Payload
+   * @returns {Promise} Promise for the POST request
+   */
   postRequest: (url, userID, APIToken, queryParams={}) => {
 		let promise = new Promise((resolve, reject) => {
 			let req = new XMLHttpRequest();
@@ -81,6 +64,7 @@ const ChallengeFromCSV = {
       reader.onload = function(e) {
         Text = e.target.result;
         tempArray = Text.split("\r\n");
+        //Data for the challenge
         Cdata = {
           group: tempArray[4],
           name: tempArray[0],
@@ -99,7 +83,7 @@ const ChallengeFromCSV = {
             text: taskArray[1],
             notes: taskArray[2],
           };
-
+          //task difficulty
           switch(taskArray[3]) {
             case "Trivial":
               priority = 0.1;
@@ -113,6 +97,7 @@ const ChallengeFromCSV = {
             case "Hard":
               priority = 2;
           }
+          //task type
           switch(taskArray[0]) {
             case "habit":
               tObject = Object.assign({
@@ -127,6 +112,7 @@ const ChallengeFromCSV = {
               startDate: taskArray[4]
             }, tObject);
             switch(taskArray[5]) {
+              //task daily type
               case "daily":
                 tObject = Object.assign({
                   everyX: taskArray[6]
