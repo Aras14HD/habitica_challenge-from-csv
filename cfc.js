@@ -18,14 +18,12 @@ const ChallengeFromCSV = {
       data.Cdata
     ).then(function (response) {
       var id = JSON.parse(response).data.id;
-      for (const task of data.tArray) {
-        ChallengeFromCSV.postRequest(
-          "https://habitica.com/api/v3/tasks/challenge/" + id,
-          userID,
-          APIToken,
-          task
-        );
-      }
+      ChallengeFromCSV.postRequest(
+        "https://habitica.com/api/v3/tasks/challenge/" + id,
+        userID,
+        APIToken,
+        data.tArray
+      );
     });
   },
   /**
