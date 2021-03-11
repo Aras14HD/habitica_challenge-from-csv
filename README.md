@@ -26,7 +26,7 @@ Takes an CSV/TXT file in the format:
  and creates a new habitica Challenge based on that data.
 
 ## Usage
-You can access the example via [Github Pages](https://aras14hd.github.io/habitica_challenge-from-csv/) or put the cfc.js file into your own project and access it via the namespace ChallengeFromCSV.
+You can access the example via [Github Pages](https://aras14hd.github.io/habitica_challenge-from-csv/) or put the cfc.js/cfc.min.js file into your own project and access it via the namespace ChallengeFromCSV.
 
 ChallengeFromCSV contains 3 functions:
 * fileParse(file) - Takes CSV/TXT File of input and returns an object containing a challenge and an array containig the tasks.
