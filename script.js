@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
     false
   );
   document.getElementById("Submit").addEventListener("click", function () {
-    userID = document.getElementById("UserID").value;
-    APIToken = document.getElementById("APItoken").value;
+    var userID = document.getElementById("UserID").value;
+    var APIToken = document.getElementById("APItoken").value;
     localStorage.setItem("userID", userID);
     localStorage.setItem("APIToken", APIToken);
     ChallengeFromCSV.sendData(
@@ -47,7 +47,7 @@ function displayData(response) {
         html += key + ": " + value + "<br/>";
     }
     html += "</div>\n<div id='tArray'>\n<h2>Tasks:</h2>";
-    for (i = 0; i < tArray.length; i++) {
+    for (var i = 0; i < tArray.length; i++) {
       html += "<h3>" + tArray[i].text + ":</h3>";
       for (const [key, value] of Object.entries(tArray[i])) {
         if (key !== "text") html += key + ": " + value + "<br/>";

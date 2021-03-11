@@ -44,7 +44,7 @@ const ChallengeFromCSV = {
       };
 
       req.onload = function () {
-        if (req.status === 200 || 201) {
+        if (req.status === (200 || 201)) {
           resolve(this.responseText);
         } else {
           reject(this.responseText);
@@ -87,7 +87,7 @@ const ChallengeFromCSV = {
         };
         //tasks
         var tArray = [];
-        for (i = 6; i < tempArray.length; i++) {
+        for (var i = 6; i < tempArray.length; i++) {
           var taskArray = tempArray[i].split(";");
           console.log(taskArray[0]);
           var tObject = {
@@ -96,15 +96,16 @@ const ChallengeFromCSV = {
             notes: taskArray[2],
           };
           //task difficulty
+          var priority = 1;
           switch (taskArray[3]) {
             case "Trivial":
-              var priority = 0.1;
+              priority = 0.1;
               break;
             case "Easy":
-              var priority = 1;
+              priority = 1;
               break;
             case "Medium":
-              var priority = 1.5;
+              priority = 1.5;
               break;
             case "Hard":
               var priority = 2;
@@ -142,7 +143,7 @@ const ChallengeFromCSV = {
                 case "weekly":
                   var days = taskArray[6].split(",");
                   var str = "{";
-                  for (j = 0; j < days.length; j++) {
+                  for (var j = 0; j < days.length; j++) {
                     if (days.length != 0) {
                       str += '"' + days[j] + '":false';
                       if (j != days.length - 1) str += ",";
