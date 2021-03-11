@@ -1,0 +1,26 @@
+{
+  "name": "ChallengeFromCSV",
+  "version": "2.0.1",
+  "description": "Creates habitica challenges from CSV",
+  "main": "build.js",
+  "dependencies": {
+    "@node-minify/core": "^4.1.2",
+    "@node-minify/terser": "^4.1.2",
+    "documentation": "^12.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node minify.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://aras14hd@github.com/Aras14HD/habitica_challenge-from-csv.git"
+  },
+  "author": "@delightedCrow & @ArrayOfFrost",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://aras14hd.github.io/habitica_challenge-from-csv/issues"
+  },
+  "homepage": "https://aras14hd.github.io/habitica_challenge-from-csv#readme"
+}

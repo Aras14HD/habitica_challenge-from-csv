@@ -16,12 +16,12 @@ document.addEventListener("DOMContentLoaded", function() {
   })
 })
 function displayData(response) {
-  userID = document.getElementById("UserID").value;
-  APIToken = document.getElementById("APItoken").value;
+  var userID = document.getElementById("UserID").value;
+  var APIToken = document.getElementById("APItoken").value;
   sessionStorage.setItem('data', JSON.stringify(response));
-  Cdata = response.Cdata;
-  tArray = response.tArray;
-  html = "<div id='Cdata'>\n<h1>Challenge:</h1>\n";
+  var Cdata = response.Cdata;
+  var tArray = response.tArray;
+  var html = "<div id='Cdata'>\n<h1>Challenge:</h1>\n";
   html += "<h2>" + Cdata.name + "</h2>"
   getRequest("https://habitica.com/api/v3/groups/" + Cdata.group, userID, APIToken).then(function(response) {
     console.log(JSON.parse(response).data)
