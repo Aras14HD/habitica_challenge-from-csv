@@ -10,7 +10,7 @@ const ChallengeFromCSV = {
    */
   sendData: (data, userID, APIToken) => {
     ChallengeFromCSV.postRequest("https://habitica.com/api/v3/challenges", userID, APIToken, data.Cdata).then(function(response) {
-      id = JSON.parse(response).data.id;
+      var id = JSON.parse(response).data.id;
       for(const task of data.tArray) {
         ChallengeFromCSV.postRequest("https://habitica.com/api/v3/tasks/challenge/" + id, userID, APIToken, task);
       }
@@ -55,16 +55,16 @@ const ChallengeFromCSV = {
    */
   fileParse: (e) => {
     return new Promise(function(resolve, reject) {
-      FileList = e.files;
+      var FileList = e.files;
       if (FileList.length > 1) console.error("multiple files selected");
-      File = FileList[0];
+      var File = FileList[0];
       var reader = new FileReader();
       reader.readAsText(File);
       reader.onload = function(e) {
         Text = e.target.result;
-        tempArray = Text.split("\r\n");
+        var tempArray = Text.split("\r\n");
         //Data for the challenge
-        Cdata = {
+        var Cdata = {
           group: tempArray[4],
           name: tempArray[0],
           shortName: tempArray[1],
@@ -73,11 +73,11 @@ const ChallengeFromCSV = {
           prize: tempArray[5]
         };
         //tasks
-        tArray = [];
-        task = false;
+        var tArray = [];
+        var task = false;
         for(i = 6; i < tempArray.length; i++) {
-          taskArray = tempArray[i].split(";");
-          tObject = {
+          var taskArray = tempArray[i].split(";");
+          var tObject = {
             type: taskArray[0],
             text: taskArray[1],
             notes: taskArray[2],
@@ -85,16 +85,16 @@ const ChallengeFromCSV = {
           //task difficulty
           switch(taskArray[3]) {
             case "Trivial":
-              priority = 0.1;
+              var priority = 0.1;
               break;
             case "Easy":
-              priority = 1;
+              var priority = 1;
               break;
             case "Medium":
-              priority = 1.5;
+              var priority = 1.5;
               break;
             case "Hard":
-              priority = 2;
+              var priority = 2;
           }
           //task type
           switch(taskArray[0]) {
@@ -118,8 +118,8 @@ const ChallengeFromCSV = {
                 }, tObject);
                 break;
               case "weekly":
-                days = taskArray[6].split(",");
-                str = "{";
+                var days = taskArray[6].split(",");
+                var str = "{";
                 for (j = 0; j < days.length; j++) {
                   if (days.length != 0) {
                     str += "\"" + days[j] + "\":false";
@@ -127,14 +127,14 @@ const ChallengeFromCSV = {
                   };
                 };
                 str += "}";
-                tempObject = JSON.parse(str);
+                var tempObject = JSON.parse(str);
                 tObject = Object.assign({
                   repeat: tempObject
                 }, tObject);
                 break;
               case "monthly":
-                weeks = taskArray[6].split(",");
-                str = "{";
+                var weeks = taskArray[6].split(",");
+                var str = "{";
                 for (j = 0; j < weeks.length; j++) {
                   if (weeks.length != 0) {
                     str += "\"" + weeks[j] + "\":false";
@@ -142,15 +142,15 @@ const ChallengeFromCSV = {
                   }
                 };
                 str += "}";
-                tempObject = JSON.parse(str);
+                var tempObject = JSON.parse(str);
                 if (taskArray[7] == 0){
-                  dom = taskArray[8].split(",");
+                  var dom = taskArray[8].split(",");
                   tObject = Object.assign({
                     repeat: tempObject,
                     daysOfMonth: dom
                   }, tObject);
                 } else {
-                  wom = taskArray[8].split(",");
+                  var wom = taskArray[8].split(",");
                   tObject = Object.assign({
                     repeat: tempObject,
                     weeksOfMonth: wom
