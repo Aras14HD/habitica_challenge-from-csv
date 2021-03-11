@@ -71,7 +71,7 @@ const ChallengeFromCSV = {
   fileParse: (e) => {
     return new Promise(function (resolve, reject) {
       var FileList = e.files;
-      if (FileList.length > 1) console.error("multiple files selected");
+      if (FileList.length > 1) reject("Multiple files selected!");
       var File = FileList[0];
       var reader = new FileReader();
       reader.readAsText(File);
@@ -89,9 +89,9 @@ const ChallengeFromCSV = {
         };
         //tasks
         var tArray = [];
-        var task = false;
         for (i = 6; i < tempArray.length; i++) {
           var taskArray = tempArray[i].split(";");
+          console.log(taskArray[0]);
           var tObject = {
             type: taskArray[0],
             text: taskArray[1],
