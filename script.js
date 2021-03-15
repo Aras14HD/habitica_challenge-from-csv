@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function () {
       ChallengeFromCSV.fileParse(this).then((response) => {
         displayData(response);
-      });
+      }); // skipcq: JS-0125
     },
     false
   );
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
           name +
           ")</a>";
       });
-    });
+    }); // skipcq: JS-0125
   });
 });
 function displayData(response) {
