@@ -11,19 +11,20 @@ const ChallengeFromCSV = {
    * @param {string} APIToken - APIToken
    */
   sendData: (data, userID, APIToken) => {
-    ChallengeFromCSV.postRequest(
+    return ChallengeFromCSV.postRequest(
       "https://habitica.com/api/v3/challenges",
       userID,
       APIToken,
       data.Cdata
-    ).then(function (response) {
-      var id = JSON.parse(response).data.id;
+    ).then((response) => {
       ChallengeFromCSV.postRequest(
-        "https://habitica.com/api/v3/tasks/challenge/" + id,
+        "https://habitica.com/api/v3/tasks/challenge/" +
+          JSON.parse(response).data.id,
         userID,
         APIToken,
         data.tArray
       );
+      return JSON.parse(response).data.id;
     });
   },
   /**
@@ -89,7 +90,6 @@ const ChallengeFromCSV = {
         var tArray = [];
         for (var i = 6; i < tempArray.length; i++) {
           var taskArray = tempArray[i].split(";");
-          console.log(taskArray[0]);
           var tObject = {
             type: taskArray[0],
             text: taskArray[1],
