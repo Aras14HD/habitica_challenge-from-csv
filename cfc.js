@@ -44,7 +44,7 @@ const ChallengeFromCSV = {
       };
 
       req.onload = function () {
-        if (req.status === (200 || 201)) {
+        if (req.status === 201) {
           resolve(this.responseText);
         } else {
           reject(this.responseText);
