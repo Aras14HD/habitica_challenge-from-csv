@@ -10,7 +10,6 @@ Takes an CSV/TXT file in the format:
 > > Challenge Description  
 > > Guild ID  
 > > Gem Prize  
-> > Indicator for beginning of tasks  
 > > Task Type: Habit; Title; Notes; Difficulty; Start Date;  
 > > Task Type: Daily; Title; Notes; Difficulty; Start Date; Repeats;  
 > > Task Type: To Do; Title; Notes; Difficulty; Due Date;  
