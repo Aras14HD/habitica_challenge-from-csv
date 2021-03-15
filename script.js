@@ -1,4 +1,3 @@
-//TODO: completion message
 document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.getItem("userID") != null) {
     document.getElementById("UserID").value = localStorage.getItem("userID");
@@ -76,7 +75,7 @@ function displayData(response) {
       document.getElementById("Data").innerHTML = html;
     },
     (response) => {
-      data = JSON.parse(response);
+      var data = JSON.parse(response);
       var html = "<h1>Error:" + data.error + "</h1>" + data.message;
       document.getElementById("Data").innerHTML = html;
     }

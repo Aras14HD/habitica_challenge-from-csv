@@ -130,6 +130,8 @@ const ChallengeFromCSV = {
                 },
                 tObject
               );
+              var tempObject = {};
+              var str = "";
               switch (taskArray[5]) {
                 //task daily type
                 case "daily":
@@ -142,7 +144,7 @@ const ChallengeFromCSV = {
                   break;
                 case "weekly":
                   var days = taskArray[6].split(",");
-                  var str = "{";
+                  str = "{";
                   for (var j = 0; j < days.length; j++) {
                     if (days.length != 0) {
                       str += '"' + days[j] + '":false';
@@ -150,7 +152,7 @@ const ChallengeFromCSV = {
                     }
                   }
                   str += "}";
-                  var tempObject = JSON.parse(str);
+                  tempObject = JSON.parse(str);
                   tObject = Object.assign(
                     {
                       repeat: tempObject,
@@ -160,7 +162,7 @@ const ChallengeFromCSV = {
                   break;
                 case "monthly":
                   var weeks = taskArray[6].split(",");
-                  var str = "{";
+                  str = "{";
                   for (j = 0; j < weeks.length; j++) {
                     if (weeks.length != 0) {
                       str += '"' + weeks[j] + '":false';
@@ -168,7 +170,7 @@ const ChallengeFromCSV = {
                     }
                   }
                   str += "}";
-                  var tempObject = JSON.parse(str);
+                  tempObject = JSON.parse(str);
                   if (taskArray[7] == 0) {
                     var dom = taskArray[8].split(",");
                     tObject = Object.assign(
