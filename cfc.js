@@ -144,7 +144,7 @@ const ChallengeFromCSV = {
                     );
                     break;
                   case "weekly":
-                    let days = taskArray[6].split(",");
+                    var days = taskArray[6].split(",");
                     str = "{";
                     for (let i = 0; i < days.length; i++) {
                       if (days.length != 0) {
@@ -162,11 +162,11 @@ const ChallengeFromCSV = {
                     );
                     break;
                   case "monthly":
-                    let weeks = taskArray[6].split(",");
+                    var weeks = taskArray[6].split(",");
                     str = "{";
                     for (let i = 0; i < weeks.length; i++) {
                       if (weeks.length != 0) {
-                        str += '"' + weeks[j] + '":false';
+                        str += '"' + weeks[i] + '":false';
                         if (i != weeks.length - 1) str += ",";
                       }
                     }
