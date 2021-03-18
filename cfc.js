@@ -69,16 +69,16 @@ const ChallengeFromCSV = {
    */
   fileParse: (e) => {
     return new Promise(function (resolve, reject) {
-      var FileList = e.files;
+      let FileList = e.files;
       if (FileList.length > 1) reject("Multiple files selected!");
-      var File = FileList[0];
+      let File = FileList[0];
       var reader = new FileReader();
       reader.readAsText(File);
       reader.onload = function (e) {
-        var text = e.target.result;
-        var tempArray = text.split("\r\n");
+        let text = e.target.result;
+        let tempArray = text.split("\r\n");
         //Data for the challenge
-        var Cdata = {
+        let Cdata = {
           group: tempArray[4],
           name: tempArray[0],
           shortName: tempArray[1],
@@ -87,11 +87,11 @@ const ChallengeFromCSV = {
           prize: tempArray[5],
         };
         //tasks
-        var tArray = [];
-        for (var i = 6; i < tempArray.length; i++) {
+        let tArray = [];
+        for (let i = 6; i < tempArray.length; i++) {
           var taskArray = tempArray[i].split(";");
           if (taskArray.length !== 1) {
-            var tObject = {
+            let tObject = {
               type: taskArray[0],
               text: taskArray[1],
               notes: taskArray[2],
@@ -144,12 +144,12 @@ const ChallengeFromCSV = {
                     );
                     break;
                   case "weekly":
-                    var days = taskArray[6].split(",");
+                    let days = taskArray[6].split(",");
                     str = "{";
-                    for (var j = 0; j < days.length; j++) {
+                    for (let i = 0; i < days.length; i++) {
                       if (days.length != 0) {
-                        str += '"' + days[j] + '":false';
-                        if (j != days.length - 1) str += ",";
+                        str += '"' + days[i] + '":false';
+                        if (i != days.length - 1) str += ",";
                       }
                     }
                     str += "}";
@@ -162,12 +162,12 @@ const ChallengeFromCSV = {
                     );
                     break;
                   case "monthly":
-                    var weeks = taskArray[6].split(",");
+                    let weeks = taskArray[6].split(",");
                     str = "{";
-                    for (j = 0; j < weeks.length; j++) {
+                    for (let i = 0; i < weeks.length; i++) {
                       if (weeks.length != 0) {
                         str += '"' + weeks[j] + '":false';
-                        if (j != weeks.length - 1) str += ",";
+                        if (i != weeks.length - 1) str += ",";
                       }
                     }
                     str += "}";

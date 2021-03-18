@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
     false
   );
   document.getElementById("Submit").addEventListener("click", function () {
-    var userID = document.getElementById("UserID").value;
-    var APIToken = document.getElementById("APItoken").value;
+    let userID = document.getElementById("UserID").value;
+    let APIToken = document.getElementById("APItoken").value;
     localStorage.setItem("userID", userID);
     localStorage.setItem("APIToken", APIToken);
     ChallengeFromCSV.sendData(
@@ -24,13 +24,13 @@ document.addEventListener("DOMContentLoaded", function () {
       userID,
       APIToken
     ).then((response) => {
-      var id = response;
+      let id = response;
       getRequest(
         "https://habitica.com/api/v3/challenges/" + response,
         userID,
         APIToken
       ).then((response) => {
-        var name = JSON.parse(response).data.name;
+        let name = JSON.parse(response).data.name;
         document.getElementById("status").innerHTML =
           '<a href="https://habitica.com/challenges/' +
           id +
@@ -42,18 +42,18 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 function displayData(response) {
-  var userID = document.getElementById("UserID").value;
-  var APIToken = document.getElementById("APItoken").value;
+  let userID = document.getElementById("UserID").value;
+  let APIToken = document.getElementById("APItoken").value;
   sessionStorage.setItem("data", JSON.stringify(response));
-  var Cdata = response.Cdata;
-  var tArray = response.tArray;
+  let Cdata = response.Cdata;
+  let tArray = response.tArray;
   getRequest(
     "https://habitica.com/api/v3/groups/" + Cdata.group,
     userID,
     APIToken
   ).then(
     function (response) {
-      var html = "<div id='Cdata'>\n<h1>Challenge:</h1>\n";
+      let html = "<div id='Cdata'>\n<h1>Challenge:</h1>\n";
       html += "<h2>" + Cdata.name + "</h2>";
       html +=
         "group: " +
@@ -66,7 +66,7 @@ function displayData(response) {
           html += key + ": " + value + "<br/>";
       }
       html += "</div>\n<div id='tArray'>\n<h2>Tasks:</h2>";
-      for (var i = 0; i < tArray.length; i++) {
+      for (let i = 0; i < tArray.length; i++) {
         html += "<h3>" + tArray[i].text + ":</h3>";
         for (const [key, value] of Object.entries(tArray[i])) {
           if (key !== "text" && key !== "repeat") {
@@ -87,7 +87,7 @@ function displayData(response) {
               daysn.push(key1);
             }
             for (let value1 of daysn) {
-              var index = -1;
+              let index = -1;
               switch (value1) {
                 case "m":
                   index = days.indexOf("Monday");
@@ -143,8 +143,8 @@ function displayData(response) {
       document.getElementById("Data").innerHTML = html;
     },
     (response) => {
-      var data = JSON.parse(response);
-      var html = "<h1>Error:" + data.error + "</h1>" + data.message;
+      let data = JSON.parse(response);
+      let html = "<h1>Error:" + data.error + "</h1>" + data.message;
       document.getElementById("Data").innerHTML = html;
     }
   );
