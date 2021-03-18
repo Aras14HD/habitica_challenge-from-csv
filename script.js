@@ -69,7 +69,75 @@ function displayData(response) {
       for (var i = 0; i < tArray.length; i++) {
         html += "<h3>" + tArray[i].text + ":</h3>";
         for (const [key, value] of Object.entries(tArray[i])) {
-          if (key !== "text") html += key + ": " + value + "<br/>";
+          if (key !== "text" && key !== "repeat") {
+            html += key + ": " + value + "<br/>";
+          }
+          if (key === "repeat") {
+            var days = [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+            ];
+            daysn = [];
+            for (const [key1, value1] of Object.entries(value)) {
+              daysn.push(key1);
+            }
+            for (let value1 of daysn) {
+              var index = -1;
+              switch (value1) {
+                case "m":
+                  index = days.indexOf("Monday");
+                  if (index > -1) {
+                    days.splice(index, 1);
+                  }
+                  break;
+                case "t":
+                  index = days.indexOf("Tuesday");
+                  if (index > -1) {
+                    days.splice(index, 1);
+                  }
+                  break;
+                case "w":
+                  index = days.indexOf("Wednesday");
+                  if (index > -1) {
+                    days.splice(index, 1);
+                  }
+                  break;
+                case "th":
+                  index = days.indexOf("Thursday");
+                  if (index > -1) {
+                    days.splice(index, 1);
+                  }
+                  break;
+                case "f":
+                  index = days.indexOf("Friday");
+                  if (index > -1) {
+                    days.splice(index, 1);
+                  }
+                  break;
+                case "s":
+                  index = days.indexOf("Saturday");
+                  if (index > -1) {
+                    days.splice(index, 1);
+                  }
+                  break;
+                case "su":
+                  index = days.indexOf("Sunday");
+                  if (index > -1) {
+                    days.splice(index, 1);
+                  }
+              }
+            }
+            html += key + ": ";
+            for (let value1 of days) {
+              html += value1 + ",";
+            }
+            html += "<br/>";
+          }
         }
       }
       document.getElementById("Data").innerHTML = html;
