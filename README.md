@@ -34,3 +34,5 @@ ChallengeFromCSV contains 3 functions:
 - fileParse(file) - Takes CSV/TXT File of input and returns an object containing a challenge and an array containig the tasks.
 - sendData(data, userID, APIToken) - Sends the Challenge and tasks via AJAX to habitica
 - start(file, userID, APIToken) - calls fileParse(file) then calls sendData(data, userID, APIToken) [data being the returned object].
+
+Licensed under the Apache License, Version 2.0
