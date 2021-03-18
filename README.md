@@ -13,14 +13,15 @@ Takes an CSV/TXT file in the format:
 > > Task Type: Habit; Title; Notes; Difficulty; Start Date;  
 > > Task Type: Daily; Title; Notes; Difficulty; Start Date; Repeats;  
 > > Task Type: To Do; Title; Notes; Difficulty; Due Date;  
-> > Task Type: Reward; Title; Notes; Cost;  
+> > Task Type: Reward; Title; Notes; Cost;
 >
 > tasks of the type Daily can be daily, weekly, monthly, or yearly. They have special requirements:  
 > daily: Repeat Every:  
-> weekly: Repeat On: list of days not repeated seperated with commas  
-> monthly: Repeat On: list of days not repeated seperated with commas; Select DOM(0) or DOW(1); Days Of Month: list of days of the month seperated with commas; Weeks Of Month: list of weeks of the month seperated with commas  
+> weekly: Repeat On: list of days(lower case) not repeated seperated with commas  
+> monthly: Repeat On: list of days(lower case) not repeated seperated with commas; Select DOM(0) or DOW(1); Days Of Month: list of days of the month seperated with commas; Weeks Of Month: list of weeks of the month seperated with commas
 >
-> Date format: _YYYY_-_MM_-_DDTHH_:_mm_:_ss_.*sss*Z
+> Date format: _YYYY_-_MM_-_DDTHH_:_mm_:_ss_.*sss*Z  
+> Week days: Monday>m; Tuesday>t; Wednesday>w; Thursday>th; Friday>f; Saturday>s; Sunday>su
 
 and creates a new habitica Challenge based on that data.
 
