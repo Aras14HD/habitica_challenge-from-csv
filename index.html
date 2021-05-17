@@ -1,23 +1,66 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8" />
-    <title>Challenge from csv</title>
-    <script src="cfc.min.js"></script>
-    <script src="script.min.js"></script>
-  </head>
-  <body>
-    <form>
-      <input type="file" id="challengeFile" accept=".txt,.csv" />
-      <input type="button" id="Submit" value="Create Challenge" />
-      <a id="status"></a>
-    </form>
-    <form>
-      <label for="UserID">UserID</label>
-      <input type="text" id="UserID" name="UserID" />
-      <label for="APItoken">APItoken</label>
-      <input type="text" id="APItoken" name="APItoken" />
-    </form>
-    <div id="Data"></div>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Challenge from csv</title>
+  <script src="cfc.min.js"></script>
+  <script src="script.min.js"></script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+    * {
+      font-family: "Roboto", sans-serif;
+      font-size: 1vw;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap-reverse;
+      justify-content: flex-start;
+    }
+
+    .r {
+      margin-left: auto;
+    }
+
+    h1 {
+      font-size: 2vw;
+    }
+
+    h2 {
+      font-size: 1.5vw;
+    }
+
+    h3 {
+      font-size: 1.17vw;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div>
+      <form>
+        <input type="file" id="challengeFile" accept=".txt,.csv" />
+        <input type="button" id="Submit" value="Create Challenge" />
+        <a id="status"></a>
+      </form>
+      <form>
+        <label for="UserID">UserID</label>
+        <input type="text" id="UserID" name="UserID" />
+        <label for="APItoken">APItoken</label>
+        <input type="text" id="APItoken" name="APItoken" />
+      </form>
+    </div>
+    <div class="r">
+      <a href="https://github.com/Aras14HD/habitica_challenge-from-csv">Source</a>
+      Found a bug?
+      <a href="https://github.com/Aras14HD/habitica_challenge-from-csv/issues">Report it</a>
+    </div>
+  </div>
+  <div id="Data"></div>
+</body>
+
 </html>

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
   if (localStorage.getItem("userID") != null) {
     document.getElementById("UserID").value = localStorage.getItem("userID");
     document.getElementById("APItoken").value = localStorage.getItem(
@@ -7,87 +7,83 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   document.getElementById("challengeFile").addEventListener(
     "change",
-    function () {
-      ChallengeFromCSV.fileParse(this).then((response) => {
+    function() {
+      ChallengeFromCSV.fileParse(this).then(response => {
         displayData(response);
       }); // skipcq: JS-0125
     },
     false
   );
-  document.getElementById("Submit").addEventListener("click", function () {
-    var userID = document.getElementById("UserID").value;
-    var APIToken = document.getElementById("APItoken").value;
+  document.getElementById("Submit").addEventListener("click", function() {
+    let userID = document.getElementById("UserID").value;
+    let APIToken = document.getElementById("APItoken").value;
     localStorage.setItem("userID", userID);
     localStorage.setItem("APIToken", APIToken);
     ChallengeFromCSV.sendData(
       JSON.parse(sessionStorage.getItem("data")),
       userID,
       APIToken
-    ).then((response) => {
-      var id = response;
+    ).then(id => {
       getRequest(
-        "https://habitica.com/api/v3/challenges/" + response,
+        "https://habitica.com/api/v3/challenges/" + id,
         userID,
         APIToken
-      ).then((response) => {
-        var name = JSON.parse(response).data.name;
-        document.getElementById("status").innerHTML =
-          '<a href="https://habitica.com/challenges/' +
-          id +
-          '">Challenge(' +
-          name +
-          ")</a>";
+      ).then(response => {
+        let name = JSON.parse(response).data.name;
+        document.getElementById(
+          "status"
+        ).innerHTML = `<a href="https://habitica.com/challenges/${id}">Challenge(${name})</a>`;
       });
     }); // skipcq: JS-0125
   });
 });
 function displayData(response) {
-  var userID = document.getElementById("UserID").value;
-  var APIToken = document.getElementById("APItoken").value;
+  let userID = document.getElementById("UserID").value;
+  let APIToken = document.getElementById("APItoken").value;
+  localStorage.setItem("userID", userID);
+  localStorage.setItem("APIToken", APIToken);
   sessionStorage.setItem("data", JSON.stringify(response));
-  var Cdata = response.Cdata;
-  var tArray = response.tArray;
+  let Cdata = response.Cdata;
+  let tArray = response.tArray;
   getRequest(
     "https://habitica.com/api/v3/groups/" + Cdata.group,
     userID,
     APIToken
   ).then(
-    function (response) {
-      var html = "<div id='Cdata'>\n<h1>Challenge:</h1>\n";
-      html += "<h2>" + Cdata.name + "</h2>";
-      html +=
-        "group: " +
-        Cdata.group +
-        "(" +
-        JSON.parse(response).data.name +
-        ")<br/>";
+    function(response) {
+      let html = `<div id='Cdata'>
+                  <h1>Challenge:</h1>
+                  `;
+      html += `<h2>${Cdata.name}</h2>`;
+      html += `group: ${Cdata.group}(${JSON.parse(response).data.name})<br/>`;
       for (const [key, value] of Object.entries(Cdata)) {
-        if (key !== "name" && key !== "group")
-          html += key + ": " + value + "<br/>";
+        if (key !== "name" && key !== "group") html += `${key}: ${value}<br/>`;
       }
-      html += "</div>\n<div id='tArray'>\n<h2>Tasks:</h2>";
-      for (var i = 0; i < tArray.length; i++) {
-        html += "<h3>" + tArray[i].text + ":</h3>";
+      html += `</div>
+               <div id='tArray'>
+               <h2>Tasks:</h2>`;
+      for (let i = 0; i < tArray.length; i++) {
+        html += `<h3>${tArray[i].text}:</h3>`;
         for (const [key, value] of Object.entries(tArray[i])) {
           if (key !== "text" && key !== "repeat") {
-            html += key + ": " + value + "<br/>";
+            html += `${key}: ${value}<br/>`;
           }
           if (key === "repeat") {
-            var days = [
+            let days = [
               "Monday",
               "Tuesday",
               "Wednesday",
               "Thursday",
               "Friday",
               "Saturday",
-              "Sunday",
+              "Sunday"
             ];
             daysn = [];
             for (const [key1, value1] of Object.entries(value)) {
               daysn.push(key1);
             }
             for (let value1 of daysn) {
-              var index = -1;
+              let index = -1;
               switch (value1) {
                 case "m":
                   index = days.indexOf("Monday");
@@ -132,9 +128,9 @@ function displayData(response) {
                   }
               }
             }
-            html += key + ": ";
+            html += `${key}: `;
             for (let value1 of days) {
-              html += value1 + ",";
+              html += `${value1},`;
             }
             html += "<br/>";
           }
@@ -142,9 +138,10 @@ function displayData(response) {
       }
       document.getElementById("Data").innerHTML = html;
     },
-    (response) => {
-      var data = JSON.parse(response);
-      var html = "<h1>Error:" + data.error + "</h1>" + data.message;
+    response => {
+      let data = JSON.parse(response);
+      let html = `<h1>Error:${data.error}</h1>
+                  ${data.message}`;
       document.getElementById("Data").innerHTML = html;
     }
   );
@@ -163,11 +160,11 @@ function getRequest(url, userID, APIToken) {
     let req = new XMLHttpRequest();
     req.open("GET", url);
 
-    req.onerror = function () {
+    req.onerror = function() {
       reject(this.statusText);
     };
 
-    req.onload = function () {
+    req.onload = function() {
       if (this.status == 200) {
         resolve(this.responseText);
       } else {
