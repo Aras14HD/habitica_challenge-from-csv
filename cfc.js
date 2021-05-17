@@ -1,6 +1,6 @@
 const ChallengeFromCSV = {
   start: (e, userID, APIToken) => {
-    ChallengeFromCSV.fileParse(e).then((result) =>
+    ChallengeFromCSV.fileParse(e).then(result =>
       ChallengeFromCSV.sendData(result, userID, APIToken)
     );
   },
@@ -16,7 +16,7 @@ const ChallengeFromCSV = {
       userID,
       APIToken,
       data.Cdata
-    ).then((response) => {
+    ).then(response => {
       ChallengeFromCSV.postRequest(
         "https://habitica.com/api/v3/tasks/challenge/" +
           JSON.parse(response).data.id,
@@ -40,11 +40,11 @@ const ChallengeFromCSV = {
       let req = new XMLHttpRequest();
       req.open("POST", url);
 
-      req.onerror = function () {
+      req.onerror = function() {
         reject(this.responseText);
       };
 
-      req.onload = function () {
+      req.onload = function() {
         if (req.status === 201) {
           resolve(this.responseText);
         } else {
@@ -67,37 +67,37 @@ const ChallengeFromCSV = {
    * @param {Object} e - The Input Element of the CSV/TXT
    * @returns {Object} An object containing a challenge and an array containig the tasks.
    */
-  fileParse: (e) => {
-    return new Promise(function (resolve, reject) {
-      var FileList = e.files;
+  fileParse: e => {
+    return new Promise(function(resolve, reject) {
+      let FileList = e.files;
       if (FileList.length > 1) reject("Multiple files selected!");
-      var File = FileList[0];
-      var reader = new FileReader();
+      let File = FileList[0];
+      let reader = new FileReader();
       reader.readAsText(File);
-      reader.onload = function (e) {
-        var text = e.target.result;
-        var tempArray = text.split("\r\n");
+      reader.onload = function(e) {
+        let text = e.target.result;
+        let tempArray = text.split("\r\n");
         //Data for the challenge
-        var Cdata = {
+        let Cdata = {
           group: tempArray[4],
           name: tempArray[0],
           shortName: tempArray[1],
           summary: tempArray[2],
           description: tempArray[3],
-          prize: tempArray[5],
+          prize: tempArray[5]
         };
         //tasks
-        var tArray = [];
-        for (var i = 6; i < tempArray.length; i++) {
-          var taskArray = tempArray[i].split(";");
+        let tArray = [];
+        for (let i = 6; i < tempArray.length; i++) {
+          let taskArray = tempArray[i].split(";");
           if (taskArray.length !== 1) {
-            var tObject = {
+            let tObject = {
               type: taskArray[0],
               text: taskArray[1],
-              notes: taskArray[2],
+              notes: taskArray[2]
             };
             //task difficulty
-            var priority = 1;
+            let priority = 1;
             switch (taskArray[3]) {
               case "Trivial":
                 priority = 0.1;
@@ -117,7 +117,7 @@ const ChallengeFromCSV = {
                 tObject = Object.assign(
                   {
                     priority: priority,
-                    startDate: taskArray[4],
+                    startDate: taskArray[4]
                   },
                   tObject
                 );
@@ -127,26 +127,26 @@ const ChallengeFromCSV = {
                   {
                     priority: priority,
                     frequency: taskArray[5],
-                    startDate: taskArray[4],
+                    startDate: taskArray[4]
                   },
                   tObject
                 );
-                var tempObject = {};
-                var str = "";
+                let tempObject = {};
+                let str = "";
                 switch (taskArray[5]) {
                   //task daily type
                   case "daily":
                     tObject = Object.assign(
                       {
-                        everyX: taskArray[6],
+                        everyX: taskArray[6]
                       },
                       tObject
                     );
                     break;
                   case "weekly":
-                    var days = taskArray[6].split(",");
+                    let days = taskArray[6].split(",");
                     str = "{";
-                    for (var j = 0; j < days.length; j++) {
+                    for (let j = 0; j < days.length; j++) {
                       if (days.length != 0) {
                         str += '"' + days[j] + '":false';
                         if (j != days.length - 1) str += ",";
@@ -156,13 +156,13 @@ const ChallengeFromCSV = {
                     tempObject = JSON.parse(str);
                     tObject = Object.assign(
                       {
-                        repeat: tempObject,
+                        repeat: tempObject
                       },
                       tObject
                     );
                     break;
                   case "monthly":
-                    var weeks = taskArray[6].split(",");
+                    let weeks = taskArray[6].split(",");
                     str = "{";
                     for (j = 0; j < weeks.length; j++) {
                       if (weeks.length != 0) {
@@ -173,20 +173,20 @@ const ChallengeFromCSV = {
                     str += "}";
                     tempObject = JSON.parse(str);
                     if (taskArray[7] == 0) {
-                      var dom = taskArray[8].split(",");
+                      let dom = taskArray[8].split(",");
                       tObject = Object.assign(
                         {
                           repeat: tempObject,
-                          daysOfMonth: dom,
+                          daysOfMonth: dom
                         },
                         tObject
                       );
                     } else {
-                      var wom = taskArray[8].split(",");
+                      let wom = taskArray[8].split(",");
                       tObject = Object.assign(
                         {
                           repeat: tempObject,
-                          weeksOfMonth: wom,
+                          weeksOfMonth: wom
                         },
                         tObject
                       );
@@ -197,7 +197,7 @@ const ChallengeFromCSV = {
                 tObject = Object.assign(
                   {
                     priority: priority,
-                    date: taskArray[4],
+                    date: taskArray[4]
                   },
                   tObject
                 );
@@ -205,7 +205,7 @@ const ChallengeFromCSV = {
               case "reward":
                 tObject = Object.assign(
                   {
-                    value: taskArray[3],
+                    value: taskArray[3]
                   },
                   tObject
                 );
@@ -215,9 +215,9 @@ const ChallengeFromCSV = {
         }
         resolve({
           Cdata: Cdata,
-          tArray: tArray,
+          tArray: tArray
         });
       };
     });
-  },
+  }
 };
