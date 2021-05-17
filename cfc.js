@@ -1,9 +1,10 @@
 const ChallengeFromCSV = {
   start: (e, userID, APIToken) => {
-    ChallengeFromCSV.fileParse(e).then((result) =>
+    ChallengeFromCSV.fileParse(e).then(result =>
       ChallengeFromCSV.sendData(result, userID, APIToken)
     );
   },
+
   /**
    *Sends the data via AJAX to habitica
    * @param {Object} data - An object containing a challenge and an array containig the tasks.
@@ -16,7 +17,7 @@ const ChallengeFromCSV = {
       userID,
       APIToken,
       data.Cdata
-    ).then((response) => {
+    ).then(response => {
       ChallengeFromCSV.postRequest(
         "https://habitica.com/api/v3/tasks/challenge/" +
           JSON.parse(response).data.id,
@@ -27,6 +28,7 @@ const ChallengeFromCSV = {
       return JSON.parse(response).data.id;
     });
   },
+
   /**
    *Sends POST request to specified url with authentication and parameters
    * @param {string} url - url to send POST request to
@@ -36,15 +38,15 @@ const ChallengeFromCSV = {
    * @returns {Promise} Promise for the POST request
    */
   postRequest: (url, userID, APIToken, queryParams = {}) => {
-    let promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       let req = new XMLHttpRequest();
       req.open("POST", url);
 
-      req.onerror = function () {
+      req.onerror = function() {
         reject(this.responseText);
       };
 
-      req.onload = function () {
+      req.onload = function() {
         if (req.status === 201) {
           resolve(this.responseText);
         } else {
@@ -60,21 +62,21 @@ const ChallengeFromCSV = {
       req.setRequestHeader("x-api-key", APIToken);
       req.send(JSON.stringify(queryParams));
     });
-    return promise;
   },
+
   /**
    *Converts CSV/TXT File to usable data.
    * @param {Object} e - The Input Element of the CSV/TXT
    * @returns {Object} An object containing a challenge and an array containig the tasks.
    */
-  fileParse: (e) => {
-    return new Promise(function (resolve, reject) {
+  fileParse: e => {
+    return new Promise(function(resolve, reject) {
       let FileList = e.files;
       if (FileList.length > 1) reject("Multiple files selected!");
       let File = FileList[0];
-      var reader = new FileReader();
+      let reader = new FileReader();
       reader.readAsText(File);
-      reader.onload = function (e) {
+      reader.onload = function(e) {
         let text = e.target.result;
         let tempArray = text.split("\r\n");
         //Data for the challenge
@@ -84,20 +86,20 @@ const ChallengeFromCSV = {
           shortName: tempArray[1],
           summary: tempArray[2],
           description: tempArray[3],
-          prize: tempArray[5],
+          prize: tempArray[5]
         };
         //tasks
         let tArray = [];
         for (let i = 6; i < tempArray.length; i++) {
-          var taskArray = tempArray[i].split(";");
+          let taskArray = tempArray[i].split(";");
           if (taskArray.length !== 1) {
             let tObject = {
               type: taskArray[0],
               text: taskArray[1],
-              notes: taskArray[2],
+              notes: taskArray[2]
             };
             //task difficulty
-            var priority = 1;
+            let priority = 1;
             switch (taskArray[3]) {
               case "Trivial":
                 priority = 0.1;
@@ -113,111 +115,116 @@ const ChallengeFromCSV = {
             }
             //task type
             switch (taskArray[0]) {
-              case "habit":
+              case "habit": {
                 tObject = Object.assign(
                   {
                     priority: priority,
-                    startDate: taskArray[4],
+                    startDate: taskArray[4]
                   },
                   tObject
                 );
                 break;
-              case "daily":
+              }
+              case "daily": {
                 tObject = Object.assign(
                   {
                     priority: priority,
                     frequency: taskArray[5],
-                    startDate: taskArray[4],
+                    startDate: taskArray[4]
                   },
                   tObject
                 );
-                var tempObject = {};
-                var str = "";
                 switch (taskArray[5]) {
                   //task daily type
-                  case "daily":
+                  case "daily": {
                     tObject = Object.assign(
                       {
-                        everyX: taskArray[6],
+                        everyX: taskArray[6]
                       },
                       tObject
                     );
                     break;
-                  case "weekly":
-                    var days = taskArray[6].split(",");
-                    str = "{";
+                  }
+                  case "weekly": {
+                    let days = taskArray[6].split(",");
+                    let str = "{";
                     for (let i = 0; i < days.length; i++) {
                       if (days.length != 0) {
-                        str += '"' + days[i] + '":false';
+                        str += `"${days[i]}":false`;
                         if (i != days.length - 1) str += ",";
                       }
                     }
                     str += "}";
-                    tempObject = JSON.parse(str);
+                    let tempObject = JSON.parse(str);
                     tObject = Object.assign(
                       {
-                        repeat: tempObject,
+                        repeat: tempObject
                       },
                       tObject
                     );
                     break;
-                  case "monthly":
-                    var weeks = taskArray[6].split(",");
-                    str = "{";
+                  }
+                  case "monthly": {
+                    let weeks = taskArray[6].split(",");
+                    let str = "{";
                     for (let i = 0; i < weeks.length; i++) {
                       if (weeks.length != 0) {
-                        str += '"' + weeks[i] + '":false';
+                        str += `"${weeks[i]}":false`;
                         if (i != weeks.length - 1) str += ",";
                       }
                     }
                     str += "}";
-                    tempObject = JSON.parse(str);
+                    let tempObject = JSON.parse(str);
                     if (taskArray[7] == 0) {
-                      var dom = taskArray[8].split(",");
+                      let dom = taskArray[8].split(",");
                       tObject = Object.assign(
                         {
                           repeat: tempObject,
-                          daysOfMonth: dom,
+                          daysOfMonth: dom
                         },
                         tObject
                       );
                     } else {
-                      var wom = taskArray[8].split(",");
+                      let wom = taskArray[8].split(",");
                       tObject = Object.assign(
                         {
                           repeat: tempObject,
-                          weeksOfMonth: wom,
+                          weeksOfMonth: wom
                         },
                         tObject
                       );
                     }
+                    break;
+                  }
                 }
-                break;
-              case "todo":
+              }
+              case "todo": {
                 tObject = Object.assign(
                   {
                     priority: priority,
-                    date: taskArray[4],
+                    date: taskArray[4]
                   },
                   tObject
                 );
                 break;
-              case "reward":
+              }
+              case "reward": {
                 tObject = Object.assign(
                   {
-                    value: taskArray[3],
+                    value: taskArray[3]
                   },
                   tObject
                 );
+              }
             }
             tArray.push(tObject);
           }
         }
         resolve({
           Cdata: Cdata,
-          tArray: tArray,
+          tArray: tArray
         });
       };
     });
-  },
+  }
 };
