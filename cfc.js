@@ -79,6 +79,12 @@ const ChallengeFromCSV = {
       reader.onload = function (e) {
         let text = e.target.result;
         let tempArray = text.split("\r\n");
+        if (tempArray.length < 6)
+          reject({
+            title: "Invalid CSV",
+            message: `Not enough lines in file for challenge! Text: 
+        ${text}`,
+          });
         //Data for the challenge
         let Cdata = {
           group: tempArray[4],
@@ -93,6 +99,12 @@ const ChallengeFromCSV = {
         for (let i = 6; i < tempArray.length; i++) {
           let taskArray = tempArray[i].split(";");
           if (taskArray.length !== 1) {
+            if (taskArray.length < 4)
+              reject({
+                title: "Invalid CSV",
+                message: `Not enough Items in line for Task! Task Text: 
+            ${tempArray[i]}`,
+              });
             let tObject = {
               type: taskArray[0],
               text: taskArray[1],
@@ -116,6 +128,12 @@ const ChallengeFromCSV = {
             //task type
             switch (taskArray[0]) {
               case "habit": {
+                if (taskArray.length < 5)
+                  reject({
+                    title: "Invalid CSV",
+                    message: `Not enough Items in line for Task of type "habit"! Task Text: 
+                    ${tempArray[i]}`,
+                  });
                 tObject = Object.assign(
                   {
                     priority: priority,
@@ -126,6 +144,12 @@ const ChallengeFromCSV = {
                 break;
               }
               case "daily": {
+                if (taskArray.length < 7)
+                  reject({
+                    title: "Invalid CSV",
+                    message: `Not enough Items in line for Task of type "daily"! Task Text:
+                    ${tempArray[i]}`,
+                  });
                 tObject = Object.assign(
                   {
                     priority: priority,
@@ -139,7 +163,7 @@ const ChallengeFromCSV = {
                   case "daily": {
                     tObject = Object.assign(
                       {
-                        everyX: taskArray[6],
+                        everyX: taskArray[6] || 1,
                       },
                       tObject
                     );
@@ -147,18 +171,20 @@ const ChallengeFromCSV = {
                   }
                   case "weekly": {
                     let days = taskArray[6].split(",");
-                    let str = "{";
+                    let repeat = {};
                     for (let i = 0; i < days.length; i++) {
-                      if (days.length != 0) {
-                        str += `"${days[i]}":false`;
-                        if (i != days.length - 1) str += ",";
-                      }
+                      if (
+                        !["m", "t", "w", "th", "f", "s", "su"].includes(days[i])
+                      )
+                        reject({
+                          title: `Unknown weekday "${days[i]}"`,
+                          message: `Valid weekdays: "m" (Monday), "t" (Tuesday), "w" (Wednesday), "th" (Thursday), "f" (Friday), "s" (Saturday), "su" (Sunday)`,
+                        });
+                      repeat[days[i]] = false;
                     }
-                    str += "}";
-                    let tempObject = JSON.parse(str);
                     tObject = Object.assign(
                       {
-                        repeat: tempObject,
+                        repeat,
                       },
                       tObject
                     );
@@ -166,20 +192,15 @@ const ChallengeFromCSV = {
                   }
                   case "monthly": {
                     let weeks = taskArray[6].split(",");
-                    let str = "{";
+                    let repeat = {};
                     for (let i = 0; i < weeks.length; i++) {
-                      if (weeks.length != 0) {
-                        str += `"${weeks[i]}":false`;
-                        if (i != weeks.length - 1) str += ",";
-                      }
+                      repeat[weeks[i]] = false;
                     }
-                    str += "}";
-                    let tempObject = JSON.parse(str);
                     if (taskArray[7] == 0) {
                       let dom = taskArray[8].split(",");
                       tObject = Object.assign(
                         {
-                          repeat: tempObject,
+                          repeat,
                           daysOfMonth: dom,
                         },
                         tObject
@@ -188,7 +209,7 @@ const ChallengeFromCSV = {
                       let wom = taskArray[8].split(",");
                       tObject = Object.assign(
                         {
-                          repeat: tempObject,
+                          repeat,
                           weeksOfMonth: wom,
                         },
                         tObject
@@ -196,9 +217,21 @@ const ChallengeFromCSV = {
                     }
                     break;
                   }
+                  default: {
+                    reject({
+                      title: `Unknown frequency type (task type daily) "${taskArray[5]}"`,
+                      message: `Valid frequency types: "daily", "weekly", "monthly"`,
+                    });
+                  }
                 }
               }
               case "todo": {
+                if (taskArray.length < 5)
+                  reject({
+                    title: "Invalid CSV",
+                    message: `Not enough Items in line for Task of type "todo"! Task Text: 
+                    ${tempArray[i]}`,
+                  });
                 tObject = Object.assign(
                   {
                     priority: priority,
@@ -215,6 +248,13 @@ const ChallengeFromCSV = {
                   },
                   tObject
                 );
+                break;
+              }
+              default: {
+                reject({
+                  title: `Unknown task type "${taskArray[0]}"`,
+                  message: `Valid types (comma seperated): "habit", "daily", "todo", "reward"`,
+                });
               }
             }
             tArray.push(tObject);

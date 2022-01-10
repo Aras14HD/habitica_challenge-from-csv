@@ -1,20 +1,31 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.getItem("userID") != null) {
     document.getElementById("UserID").value = localStorage.getItem("userID");
-    document.getElementById("APItoken").value = localStorage.getItem(
-      "APIToken"
-    );
+    document.getElementById("APItoken").value =
+      localStorage.getItem("APIToken");
   }
   document.getElementById("challengeFile").addEventListener(
     "change",
-    function() {
-      ChallengeFromCSV.fileParse(this).then(response => {
-        displayData(response);
-      }); // skipcq: JS-0125
+    function () {
+      ChallengeFromCSV.fileParse(this)
+        .then((response) => {
+          displayData(response);
+        })
+        .catch((error) => {
+          let html;
+          if (error.title) {
+            html = `<h1>Error:${error.title}</h1>
+                  ${error.message}`;
+          } else {
+            html = `<h1>Error:${error}</h1>`;
+          }
+
+          document.getElementById("Data").innerHTML = html;
+        }); // skipcq: JS-0125
     },
     false
   );
-  document.getElementById("Submit").addEventListener("click", function() {
+  document.getElementById("Submit").addEventListener("click", function () {
     let userID = document.getElementById("UserID").value;
     let APIToken = document.getElementById("APItoken").value;
     localStorage.setItem("userID", userID);
@@ -23,12 +34,12 @@ document.addEventListener("DOMContentLoaded", function() {
       JSON.parse(sessionStorage.getItem("data")),
       userID,
       APIToken
-    ).then(id => {
+    ).then((id) => {
       getRequest(
         "https://habitica.com/api/v3/challenges/" + id,
         userID,
         APIToken
-      ).then(response => {
+      ).then((response) => {
         let name = JSON.parse(response).data.name;
         document.getElementById(
           "status"
@@ -50,7 +61,7 @@ function displayData(response) {
     userID,
     APIToken
   ).then(
-    function(response) {
+    function (response) {
       let html = `<div id='Cdata'>
                   <h1>Challenge:</h1>
                   `;
@@ -76,7 +87,7 @@ function displayData(response) {
               "Thursday",
               "Friday",
               "Saturday",
-              "Sunday"
+              "Sunday",
             ];
             daysn = [];
             for (const [key1, value1] of Object.entries(value)) {
@@ -138,7 +149,7 @@ function displayData(response) {
       }
       document.getElementById("Data").innerHTML = html;
     },
-    response => {
+    (response) => {
       let data = JSON.parse(response);
       let html = `<h1>Error:${data.error}</h1>
                   ${data.message}`;
@@ -160,11 +171,11 @@ function getRequest(url, userID, APIToken) {
     let req = new XMLHttpRequest();
     req.open("GET", url);
 
-    req.onerror = function() {
+    req.onerror = function () {
       reject(this.statusText);
     };
 
-    req.onload = function() {
+    req.onload = function () {
       if (this.status == 200) {
         resolve(this.responseText);
       } else {
