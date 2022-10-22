@@ -17,8 +17,8 @@
     "type": "git",
     "url": "git+https://aras14hd@github.com/Aras14HD/habitica_challenge-from-csv.git"
   },
-  "author": "@delightedCrow & @ArrayOfFrost",
-  "license": "MIT",
+  "author": "@Aras14HD",
+  "license": "Apache 2.0",
   "bugs": {
     "url": "https://aras14hd.github.io/habitica_challenge-from-csv/issues"
   },

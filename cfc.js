@@ -1,4 +1,16 @@
+/**
+ * A library to parse CSV files and interact with the Habitica API to create Challenges from them
+ * @param {Object} e - The Input Element of the CSV/TXT
+ * @param {string} userID - userID
+ * @param {string} APIToken -APIToken
+ */
 const ChallengeFromCSV = {
+  /**
+   * Creates a cfc instance
+   * @param {Object} e - The Input Element of the CSV/TXT
+   * @param {string} userID - userID
+   * @param {string} APIToken -APIToken
+   */
   start: (e, userID, APIToken) => {
     ChallengeFromCSV.fileParse(e).then((result) =>
       ChallengeFromCSV.sendData(result, userID, APIToken)
@@ -7,7 +19,7 @@ const ChallengeFromCSV = {
 
   /**
    *Sends the data via AJAX to habitica
-   * @param {Object} data - An object containing a challenge and an array containig the tasks.
+   * @param {Object} data - An object containing a challenge and an array containig the tasks
    * @param {string} userID - userID
    * @param {string} APIToken - APIToken
    */
