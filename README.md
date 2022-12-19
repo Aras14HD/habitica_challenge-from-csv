@@ -16,7 +16,7 @@ Takes an CSV/TXT file in the format:
 > > Task Type: Reward; Title; Notes; Cost;
 >
 > tasks of the type Daily can be daily, weekly, monthly, or yearly. They have special requirements:  
-> daily: Repeat Every:  
+> daily, yearly: Repeat Every:  
 > weekly: Repeat On: list of days(lower case) not repeated seperated with commas  
 > monthly: Repeat On: list of days(lower case) not repeated seperated with commas; Select DOM(0) or DOW(1); Days Of Month: list of days of the month seperated with commas; Weeks Of Month: list of weeks of the month seperated with commas
 >
