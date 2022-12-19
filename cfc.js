@@ -229,6 +229,15 @@ const ChallengeFromCSV = {
                     }
                     break;
                   }
+                  case "yearly": {
+                    tObject = Object.assign(
+                      {
+                        everyX: taskArray[6] || 1,
+                      },
+                      tObject
+                    );
+                    break;
+                  }
                   default: {
                     reject({
                       title: `Unknown frequency type (task type daily) "${taskArray[5]}"`,
