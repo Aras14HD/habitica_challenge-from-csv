@@ -241,7 +241,7 @@ const ChallengeFromCSV = {
                   default: {
                     reject({
                       title: `Unknown frequency type (task type daily) "${taskArray[5]}"`,
-                      message: `Valid frequency types: "daily", "weekly", "monthly"`,
+                      message: `Valid frequency types: "daily", "weekly", "monthly", "yearly"`,
                     });
                   }
                 }
