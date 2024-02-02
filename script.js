@@ -48,6 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }); // skipcq: JS-0125
   });
 });
+
+/**
+ * Display the parsed Data
+ * @param {ParsedChallenge} response 
+ */
 function displayData(response) {
   let userID = document.getElementById("UserID").value;
   let APIToken = document.getElementById("APItoken").value;
@@ -89,8 +94,8 @@ function displayData(response) {
               "Saturday",
               "Sunday",
             ];
-            daysn = [];
-            for (const [key1, value1] of Object.entries(value)) {
+            let daysn = [];
+            for (const [key1] of Object.entries(value)) {
               daysn.push(key1);
             }
             for (let value1 of daysn) {
@@ -162,8 +167,9 @@ function displayData(response) {
  * Make a GET request to the Habitica API.
  * Data object returned varies based on the API url called.
  * For accessing personal data endpoints, use {@link HabiticaAPIManager#authGetRequest|authGetRequest}
- * @param {string} baseURL - the url of the api call.
- * @param {object} [queryParams={}] - key-value pairs for any parameters needed by the api call.
+ * @param {string} url - the url of the api call.
+ * @param {string} userID - the ID of the user
+ * @param {string} APIToken
  * @returns {Promise<String>} Promise containing the raw API response data as a string.
  */
 function getRequest(url, userID, APIToken) {

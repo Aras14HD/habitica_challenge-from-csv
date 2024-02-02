@@ -8,6 +8,7 @@ const ChallengeFromCSV = {
   /**
    * Creates a cfc instance
    * @param {Object} e - The Input Element of the CSV/TXT
+   * @param {Array<File>} e.files
    * @param {string} userID - userID
    * @param {string} APIToken -APIToken
    */
@@ -19,7 +20,7 @@ const ChallengeFromCSV = {
 
   /**
    *Sends the data via AJAX to habitica
-   * @param {Object} data - An object containing a challenge and an array containig the tasks
+   * @param {ParsedChallenge} data - An object containing a challenge and an array containig the tasks
    * @param {string} userID - userID
    * @param {string} APIToken - APIToken
    */
@@ -47,7 +48,7 @@ const ChallengeFromCSV = {
    * @param {string} userID - userID
    * @param {string} APIToken - APIToken
    * @param {Object} queryParams - Request Payload
-   * @returns {Promise} Promise for the POST request
+   * @returns {Promise<string>} Promise for the POST request
    */
   postRequest: (url, userID, APIToken, queryParams = {}) => {
     return new Promise((resolve, reject) => {
@@ -77,9 +78,36 @@ const ChallengeFromCSV = {
   },
 
   /**
+   * @typedef {Object} Task
+   * @property {string} type
+   * @property {string} text
+   * @property {string} notes
+   * @property {number | undefined} priority
+   * @property {Object | undefined} startDate
+   * @property {number | undefined} frequency
+   * @property {number | undefined} everyX
+   * @property {Array<boolean> | undefined} repeat
+   * @property {Array<number> | undefined} daysOfMonth
+   * @property {Array<number> | undefined} weeksOfMonth
+   * @property {string | undefined} date
+   * @property {number | undefined} value
+   */
+  /**
+   * @typedef {Object} ParsedChallenge
+   * @property {Object} Cdata
+   * @property {string} Cdata.group
+   * @property {string} Cdata.name
+   * @property {string} Cdata.shortName
+   * @property {string} Cdata.summary
+   * @property {string} Cdata.description
+   * @property {string} Cdata.prize
+   * @property {Array<Task>} tArray
+   */
+  /**
    *Converts CSV/TXT File to usable data.
    * @param {Object} e - The Input Element of the CSV/TXT
-   * @returns {Object} An object containing a challenge and an array containig the tasks.
+   * @param {Array<Blob>} e.files - List of files
+   * @returns {Promise<ParsedChallenge>} An object containing a challenge and an array containig the tasks.
    */
   fileParse: (e) => {
     return new Promise(function (resolve, reject) {
